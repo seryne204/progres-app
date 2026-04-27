@@ -1,0 +1,28 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compiler ProgresApp",
+            "type": "shell",
+            "command": "javac",
+            "args": [
+                "-d",
+                "out",
+                "src/progresapp/Main.java",
+                "src/progresapp/model/*.java",
+                "src/progresapp/service/*.java",
+                "src/progresapp/ui/*.java"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "powershell.exe",
+                    "args": [
+                        "-Command"
+                    ]
+                }
+            },
+            "problemMatcher": "$javac"
+        }
+    ]
+}
