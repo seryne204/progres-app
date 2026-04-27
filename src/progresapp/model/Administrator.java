@@ -2,25 +2,19 @@ package progresapp.model;
 
 import java.io.Serializable;
 
-public class Professor implements Serializable {
+public class Administrator implements Serializable {
     private String id;
     private String fullName;
-    private String specialty;
     private String password;
 
-    public Professor(String id, String fullName, String specialty, String password) {
+    public Administrator(String id, String fullName, String password) {
         this.id = id;
         this.fullName = fullName;
-        this.specialty = specialty;
         this.password = password;
     }
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getFullName() {
@@ -29,14 +23,6 @@ public class Professor implements Serializable {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public String getSpecialty() {
-        return specialty;
-    }
-
-    public void setSpecialty(String specialty) {
-        this.specialty = specialty;
     }
 
     public String getPassword() {

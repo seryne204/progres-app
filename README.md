@@ -1,123 +1,150 @@
-# Application Universitaire Inspiree de PROGRES
+# Systeme de Gestion des Etudiants
 
-## 1. Presentation generale
+## 1. Presentation du projet
 
-Ce projet a ete realise dans le cadre d'un travail pratique de programmation orientee objet. Il s'agit d'une application de bureau developpee en Java Swing et inspiree du portail universitaire PROGRES utilise dans l'enseignement superieur.
+Ce projet a ete realise dans le cadre du module de Programmation Orientee Objet. Il s'agit d'une application Java Swing inspiree du sujet "Systeme de Gestion des Etudiants" destine a illustrer la gestion du parcours universitaire d'un etudiant.
 
-L'objectif principal est de proposer une interface simple permettant de representer deux profils d'utilisateurs :
+L'application prend en charge :
 
-- l'etudiant, qui consulte ses informations pedagogiques ;
-- le professeur, qui consulte ses sections, son emploi du temps et saisit les notes des etudiants.
+- la gestion des etudiants ;
+- la gestion des enseignants ;
+- la gestion des modules ;
+- l'inscription des etudiants dans les modules ;
+- la saisie des notes de controle continu, d'examen et de rattrapage ;
+- le calcul des moyennes avant et apres rattrapage ;
+- l'identification des etudiants en rattrapage ;
+- la determination du statut final `Diplome / Non diplome`.
 
-## 2. Objectifs pedagogiques
+## 2. Technologies utilisees
 
-Ce projet permet de mettre en pratique plusieurs notions importantes de la programmation orientee objet :
+- Java 17
+- Java Swing pour l'interface graphique
+- Organisation orientee objet par packages
+- Script SQL Server fourni dans `database/schema.sql`
 
-- la modelisation par classes ;
-- l'encapsulation des donnees ;
-- la separation entre la couche metier, la couche de persistance et la couche interface ;
-- la reutilisation des objets ;
-- l'organisation d'une application en packages.
+## 3. Structure du projet
 
-## 3. Fonctionnalites de l'application
+- `src/progresapp/model` : classes metier
+- `src/progresapp/service` : logique metier et persistance locale
+- `src/progresapp/ui` : interfaces graphiques
+- `docs/conception.md` : UML et modele logique de donnees
+- `database/schema.sql` : script de creation de la base SQL Server
 
-### 3.1 Espace etudiant
+## 4. Repartition des roles
 
-- authentification par identifiant et mot de passe ;
-- affichage du tableau de bord ;
-- consultation des notes ;
-- consultation de l'emploi du temps ;
-- consultation des absences ;
-- deconnexion pour revenir a la page de connexion.
+### 4.1 Administrateur
 
-### 3.2 Espace professeur
+L'administrateur peut :
 
-- authentification par identifiant et mot de passe ;
-- affichage des sections affectees ;
-- consultation de l'emploi du temps du professeur ;
-- saisie et modification des notes ;
-- selection de l'etudiant a partir d'une liste deroulante ;
-- restriction de la modification aux seuls modules enseignes par le professeur ;
-- deconnexion pour revenir a la page de connexion.
+- ajouter, supprimer et modifier un etudiant ;
+- ajouter, supprimer et modifier un module ;
+- ajouter, supprimer et modifier un enseignant ;
+- inscrire un etudiant dans un ou plusieurs modules ;
+- affecter les modules aux enseignants ;
+- consulter la liste finale des etudiants diplomes apres rattrapage ;
+- afficher le statut final de chaque etudiant ;
+- visualiser les modules bloquants pour les etudiants non diplomes.
 
-## 4. Comptes de demonstration
+### 4.2 Enseignant
 
-### 4.1 Comptes etudiants
+L'enseignant peut :
+
+- consulter les modules qui lui sont affectes ;
+- voir les etudiants inscrits dans chacun de ses modules ;
+- saisir les notes de controle continu, d'examen et de rattrapage ;
+- consulter uniquement la liste des etudiants en rattrapage dans ses propres modules.
+
+### 4.3 Etudiant
+
+L'etudiant peut :
+
+- consulter son emploi du temps a partir des modules auxquels il est inscrit ;
+- voir ses notes avant rattrapage ;
+- voir ses notes apres rattrapage ;
+- consulter sa moyenne generale ;
+- voir son statut final `Diplome / Non diplome` ;
+- voir les modules bloquants si son parcours n'est pas valide.
+
+## 5. Regles de gestion
+
+- un etudiant peut etre inscrit dans plusieurs modules ;
+- une seule inscription est autorisee par etudiant et par module ;
+- chaque note appartient a un seul etudiant et un seul module ;
+- la moyenne avant rattrapage est calculee par :
+
+```text
+Moyenne = (CC * 40 + Examen * 60) / 100
+```
+
+- si la moyenne est inferieure a 10, le module passe en rattrapage ;
+- apres rattrapage, la meilleure note est retenue ;
+- un etudiant est considere `Diplome` seulement si tous les modules auxquels il est inscrit sont valides ;
+- sinon, il est `Non diplome` et les modules restants sont affiches comme modules bloquants.
+
+## 6. Comptes de demonstration
+
+### Etudiants
 
 - `2023-INFO-1452` / `etudiant123`
 - `2023-INFO-1789` / `sara123`
 
-### 4.2 Compte professeur
+### Enseignants
 
 - `PROF-INFO-01` / `prof123`
+- `PROF-INFO-02` / `prof456`
 
-## 5. Architecture du projet
+### Administrateur
 
-Le projet est structure selon plusieurs packages :
+- `ADMIN-01` / `admin123`
 
-- `progresapp.model` : contient les classes metier ;
-- `progresapp.service` : contient la logique de gestion et la sauvegarde ;
-- `progresapp.ui` : contient les interfaces graphiques ;
-- `progresapp` : contient la classe principale de lancement.
+## 7. Fonctionnalites principales deja implementees
 
-## 6. Description des classes principales
+- authentification multi-roles
+- ajout, modification et suppression des entites principales
+- inscription d'etudiants dans les modules
+- affectation des modules aux enseignants
+- saisie des notes pedagogiques
+- affichage des etudiants en rattrapage
+- affichage de la liste finale des diplomes
+- affichage du statut final et des blocages
 
-### 6.1 Classes metier
+## 8. Execution du projet
 
-- `Student` : represente un etudiant ;
-- `Professor` : represente un professeur ;
-- `Course` : represente un module ;
-- `Grade` : represente une note associee a un module ;
-- `ScheduleEntry` : represente une seance dans l'emploi du temps de l'etudiant ;
-- `ProfessorScheduleEntry` : represente une seance dans l'emploi du temps du professeur ;
-- `Absence` : represente une absence ;
-- `StudentRecord` : regroupe toutes les donnees d'un etudiant ;
-- `ProfessorRecord` : regroupe les donnees du professeur.
-
-### 6.2 Classes de service
-
-- `UniversityService` : gere l'authentification, l'acces aux donnees, le calcul de la moyenne, les credits et la mise a jour des notes ;
-- `DataStore` : assure la lecture et l'ecriture des donnees dans un fichier texte local.
-
-### 6.3 Classes d'interface graphique
-
-- `LoginFrame` : fenetre de connexion ;
-- `ProgresDashboard` : espace etudiant ;
-- `ProfessorDashboard` : espace professeur.
-
-## 7. Persistance des donnees
-
-Les donnees des etudiants sont sauvegardees dans le fichier suivant :
-
-`data/student-data.txt`
-
-Ce fichier contient les informations necessaires au chargement des comptes etudiants ainsi que leurs notes, emplois du temps et absences.
-
-## 8. Compilation et execution
-
-Depuis le dossier du projet, utiliser les commandes suivantes :
+Compiler :
 
 ```bash
 javac -d out src/progresapp/Main.java src/progresapp/model/*.java src/progresapp/service/*.java src/progresapp/ui/*.java
+```
+
+Lancer :
+
+```bash
 java -cp out progresapp.Main
 ```
 
-## 9. Resultats obtenus
+## 9. Contenu academique pour le rapport
 
-L'application finale permet :
+Le projet contient deja des elements utiles pour le rapport :
 
-- la simulation d'un mini portail universitaire ;
-- la gestion de deux roles distincts ;
-- l'utilisation de plusieurs classes objet specialisees ;
-- la consultation et la modification de donnees dans une interface graphique ;
-- la sauvegarde locale des notes modifiees.
+- une structure orientee objet claire ;
+- une separation entre modele, service et interface ;
+- un document de conception UML / MLD ;
+- un script de base de donnees SQL Server.
 
-## 10. Perspectives d'amelioration
+Fichiers utiles :
 
-Parmi les evolutions possibles :
+- [docs/conception.md](</C:/Users/hp/OneDrive/Documents/New project/docs/conception.md>)
+- [database/schema.sql](</C:/Users/hp/OneDrive/Documents/New project/database/schema.sql>)
 
-- ajouter plusieurs professeurs ;
-- ajouter plusieurs sections avec de vrais groupes d'etudiants ;
-- connecter l'application a une base de donnees ;
-- ajouter la gestion des examens, des releves de notes et des documents administratifs ;
-- generer automatiquement des statistiques pedagogiques.
+## 10. Limites actuelles
+
+- l'application utilise encore une persistance locale Java pour la demonstration ;
+- la base SQL Server est preparee, mais pas encore branchee directement a l'application via JDBC.
+
+## 11. Perspectives d'amelioration
+
+- connecter l'application a SQL Server avec JDBC ;
+- ajouter la recherche et le filtrage dans les tableaux ;
+- renforcer la validation des formulaires ;
+- generer un rapport ou un releve de notes exportable ;
+- ajouter la gestion de plusieurs promotions et sections.

@@ -29,7 +29,7 @@ public class LoginFrame extends JFrame {
         this.service = service;
         this.registrationField = new JTextField("2023-INFO-1452");
         this.passwordField = new JPasswordField("etudiant123");
-        this.roleBox = new JComboBox<>(new String[] {"Etudiant", "Professeur"});
+        this.roleBox = new JComboBox<>(new String[] {"Etudiant", "Enseignant", "Administrateur"});
 
         setTitle("Connexion Portail Universitaire");
         setSize(540, 420);
@@ -54,7 +54,7 @@ public class LoginFrame extends JFrame {
         title.setFont(new Font("Segoe UI", Font.BOLD, 28));
         title.setForeground(new Color(24, 58, 95));
 
-        JLabel subtitle = new JLabel("Connexion etudiant ou professeur", SwingConstants.CENTER);
+        JLabel subtitle = new JLabel("Connexion etudiant, enseignant ou administrateur", SwingConstants.CENTER);
         subtitle.setFont(new Font("Segoe UI", Font.PLAIN, 18));
         subtitle.setForeground(new Color(76, 98, 120));
 
@@ -116,16 +116,23 @@ public class LoginFrame extends JFrame {
         String password = new String(passwordField.getPassword());
         String role = String.valueOf(roleBox.getSelectedItem());
 
-        if ("Etudiant".equals(role) && service.authenticate(registration, password)) {
+        if ("Etudiant".equals(role) && service.authenticateStudent(registration, password)) {
             dispose();
             ProgresDashboard dashboard = new ProgresDashboard(service);
             dashboard.setVisible(true);
             return;
         }
 
-        if ("Professeur".equals(role) && service.authenticateProfessor(registration, password)) {
+        if ("Enseignant".equals(role) && service.authenticateProfessor(registration, password)) {
             dispose();
             ProfessorDashboard dashboard = new ProfessorDashboard(service);
+            dashboard.setVisible(true);
+            return;
+        }
+
+        if ("Administrateur".equals(role) && service.authenticateAdministrator(registration, password)) {
+            dispose();
+            AdministratorDashboard dashboard = new AdministratorDashboard(service);
             dashboard.setVisible(true);
             return;
         }
