@@ -287,14 +287,18 @@ public class AdministratorDashboard extends JFrame {
         JButton assignButton = new JButton("Affecter");
         assignButton.addActionListener(event -> {
             String courseId = extractId(String.valueOf(courseBox.getSelectedItem()));
+            String professorId = extractId(String.valueOf(professorBox.getSelectedItem()));
             Course course = service.findCourseById(courseId);
             if (course == null) {
                 JOptionPane.showMessageDialog(this, "Module introuvable.");
                 return;
             }
-            course.setProfessorId(extractId(String.valueOf(professorBox.getSelectedItem())));
-            service.save();
+            course.setProfessorId(professorId);
+            service.updateCourse(course);
+            populateCourseBox(courseBox, service.getCourses());
+            populateProfessorBox(professorBox);
             refreshTable(table, service.getCourseRows());
+            JOptionPane.showMessageDialog(this, "Affectation reussie!");
         });
 
         JPanel panel = new JPanel(new BorderLayout(16, 16));
