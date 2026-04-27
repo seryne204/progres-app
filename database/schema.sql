@@ -1,3 +1,9 @@
+CREATE TABLE Administrator (
+    id VARCHAR(30) PRIMARY KEY,
+    full_name VARCHAR(120) NOT NULL,
+    password VARCHAR(60) NOT NULL
+);
+
 CREATE TABLE Professor (
     id VARCHAR(30) PRIMARY KEY,
     full_name VARCHAR(120) NOT NULL,

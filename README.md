@@ -21,6 +21,7 @@ L'application prend en charge :
 - Java Swing pour l'interface graphique
 - Organisation orientee objet par packages
 - Script SQL Server fourni dans `database/schema.sql`
+- JDBC SQL Server pour la connexion a la base `DB`
 
 ## 3. Structure du projet
 
@@ -136,14 +137,28 @@ Fichiers utiles :
 - [docs/conception.md](</C:/Users/hp/OneDrive/Documents/New project/docs/conception.md>)
 - [database/schema.sql](</C:/Users/hp/OneDrive/Documents/New project/database/schema.sql>)
 
-## 10. Limites actuelles
+## 10. Connexion SQL Server
 
-- l'application utilise encore une persistance locale Java pour la demonstration ;
-- la base SQL Server est preparee, mais pas encore branchee directement a l'application via JDBC.
+Le projet est prepare pour SQL Server avec les parametres suivants :
+
+- serveur : `localhost\TEW_SQLEXPRESS`
+- base de donnees : `DB`
+- authentification : `Windows Authentication`
+
+La connexion JDBC utilise une URL de ce type :
+
+```text
+jdbc:sqlserver://localhost;instanceName=TEW_SQLEXPRESS;databaseName=DB;integratedSecurity=true;encrypt=true;trustServerCertificate=true;
+```
+
+Important :
+
+- le driver JDBC SQL Server de Microsoft doit etre present ;
+- selon l'installation, il peut etre necessaire d'ajouter `mssql-jdbc-*.jar` au classpath ;
+- en mode `Windows Authentication`, il peut aussi falloir la bibliotheque native d'authentification du driver Microsoft.
 
 ## 11. Perspectives d'amelioration
 
-- connecter l'application a SQL Server avec JDBC ;
 - ajouter la recherche et le filtrage dans les tableaux ;
 - renforcer la validation des formulaires ;
 - generer un rapport ou un releve de notes exportable ;
